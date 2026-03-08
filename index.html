@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modul Pembelajaran Kendiri REKA - Kementerian Kesihatan Malaysia">
+    <title>REKA: E-Pembelajaran Mampan</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons (Phosphor) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            950: '#052e16',
+                        },
+                        accent: {
+                            500: '#0ea5e9', // Sky blue for tertiary elements
+                            600: '#0284c7'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body
+    class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-200 selection:text-brand-900 flex flex-col min-h-screen">
+
+    <!-- Sticky Progress Header -->
+    <header
+        class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300"
+        id="main-header">
+        <div class="max-w-6xl mx-auto px-4 lg:px-8 h-20 flex items-center justify-between">
+
+            <!-- Logo & Title -->
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white shadow-lg overflow-hidden relative">
+                    <i class="ph ph-leaf text-2xl relative z-10"></i>
+                    <div class="absolute inset-0 bg-white/20 rounded-full blur animate-pulse-slow"></div>
+                </div>
+                <div>
+                    <h1 class="font-heading font-bold text-lg leading-tight text-slate-900 tracking-tight">REKA</h1>
+                    <p class="text-[10px] font-medium text-brand-600 uppercase tracking-wider hidden sm:block">Fasiliti
+                        Rendah Karbon</p>
+                </div>
+            </div>
+
+            <!-- Progress Tracker -->
+            <nav class="hidden md:flex flex-1 max-w-xl mx-8 items-center" aria-label="Course Progress">
+                <!-- Topik 1 -->
+                <div class="flex flex-col items-center flex-1 group">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 nav-step"
+                        data-target="topik-1">
+                        1
+                    </div>
+                    <span class="text-[10px] font-medium text-slate-500 mt-1 uppercase tracking-wide">3 Skop</span>
+                </div>
+
+                <div class="flex-1 h-[2px] bg-slate-200 mx-2 nav-line"></div>
+
+                <!-- Topik 2 -->
+                <div class="flex flex-col items-center flex-1 group">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 nav-step"
+                        data-target="topik-2">
+                        2
+                    </div>
+                    <span class="text-[10px] font-medium text-slate-500 mt-1 uppercase tracking-wide">Amalan</span>
+                </div>
+
+                <div class="flex-1 h-[2px] bg-slate-200 mx-2 nav-line"></div>
+
+                <!-- Topik 3 -->
+                <div class="flex flex-col items-center flex-1 group">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 nav-step"
+                        data-target="topik-3">
+                        3
+                    </div>
+                    <span class="text-[10px] font-medium text-slate-500 mt-1 uppercase tracking-wide">Peranan</span>
+                </div>
+
+                <div class="flex-1 h-[2px] bg-slate-200 mx-2 nav-line"></div>
+
+                <!-- Kuiz -->
+                <div class="flex flex-col items-center flex-1 group">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 nav-step"
+                        data-target="topik-4">
+                        <i class="ph ph-medal"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-slate-500 mt-1 uppercase tracking-wide">Kuiz</span>
+                </div>
+            </nav>
+
+            <!-- KKM Badge -->
+            <div class="flex items-center gap-2">
+                <span
+                    class="text-xs font-semibold px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg border border-slate-200 hidden sm:inline-flex items-center gap-1.5">
+                    <i class="ph-fill ph-check-circle text-brand-500"></i> KKM
+                </span>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 text-slate-500 hover:text-slate-900 focus:outline-none">
+                    <i class="ph ph-list text-2xl"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Global Progress Bar (Top Edge) -->
+        <div class="absolute top-0 left-0 h-1 bg-gradient-to-r from-brand-400 to-brand-600 w-0 transition-all duration-300"
+            id="global-progress"></div>
+    </header>
+
+    <!-- Content Sections -->
+    <main class="flex-1 pt-20">
+
+        <!-- Hero Section -->
+        <section
+            class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-slate-900 text-white pb-16 pt-12">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 bg-gradient-to-br from-brand-900 via-slate-900 to-slate-950 z-0"></div>
+            <div class="absolute inset-0 bg-grid-pattern opacity-30 z-0"></div>
+
+            <!-- Floating Decorative Orbs -->
+            <div
+                class="absolute top-20 left-10 w-64 h-64 bg-brand-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float transform-gpu will-change-transform pointer-events-none">
+            </div>
+            <div class="absolute bottom-20 right-10 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float transform-gpu will-change-transform pointer-events-none"
+                style="animation-delay: 2s;"></div>
+
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center flex flex-col items-center">
+                <span
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-brand-300 text-xs font-semibold uppercase tracking-widest mb-8 reveal">
+                    <i class="ph-fill ph-leaf"></i> Inisiatif Kelestarian 2050
+                </span>
+
+                <h2
+                    class="text-4xl md:text-6xl lg:text-7xl font-heading font-extrabold tracking-tight leading-[1.1] mb-6 reveal reveal-delay-1">
+                    Program Fasiliti <br />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 to-emerald-200">Rendah
+                        Karbon</span>
+                </h2>
+
+                <p
+                    class="text-lg md:text-xl text-slate-300 max-w-2xl mb-10 leading-relaxed font-light reveal reveal-delay-2">
+                    Modul pembelajaran interaktif untuk anggota kesihatan. Fahami teori, praktikkan intervensi, dan
+                    capai sasaran Net-Zero.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 reveal reveal-delay-3">
+                    <a href="#topik-1"
+                        class="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-xl bg-brand-500 hover:bg-brand-400 text-white font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/30 transform hover:-translate-y-1">
+                        Mula Belajar <i class="ph-bold ph-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Scroll indicator -->
+                <div
+                    class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-60 animate-bounce">
+                    <span class="text-[10px] uppercase tracking-widest font-semibold">Tatal ke bawah</span>
+                    <i class="ph ph-arrow-down text-xl"></i>
+                </div>
+            </div>
+
+            <!-- Diagonal Divider -->
+            <div
+                class="absolute bottom-0 left-0 right-0 h-16 bg-slate-50 transform origin-left -skew-y-2 z-20 translate-y-8">
+            </div>
+        </section>
+
+        <!-- Topik 1 -->
+        <section id="topik-1" class="py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto scroll-mt-20">
+            <div class="mb-16 text-center max-w-3xl mx-auto reveal">
+                <h3 class="text-brand-600 font-bold tracking-widest uppercase text-sm mb-3">Topik 1</h3>
+                <h4 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-6">Pengenalan & Skop Pelepasan
+                    Karbon
+                </h4>
+                <p class="text-lg text-slate-600">Sektor kesihatan menyumbang kira-kira <strong
+                        class="text-slate-900">5% daripada pelepasan Gas Rumah Hijau (GHG)</strong> global. Program REKA
+                    menyokong komitmen <strong>National Determined Contributions (NDCs)</strong> Malaysia untuk
+                    <strong>mengurangkan 45% intensiti karbon menjelang 2030.</strong>
+                </p>
+            </div>
+
+            <!-- Interative Scope Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16">
+                <!-- Skop 1 -->
+                <div
+                    class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm hover-card reveal reveal-delay-1 relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-red-400 opacity-50 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div
+                        class="w-14 h-14 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-3xl mb-6 shadow-sm border border-red-100 group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-ambulance"></i>
+                    </div>
+                    <h5 class="text-xl font-bold text-slate-900 mb-3">Skop 1: Langsung</h5>
+                    <p class="text-slate-600 text-sm leading-relaxed text-justify">Pelepasan terus dari sumber yang
+                        dimiliki. Contohnya pembakaran bahan api kenderaan jabatan, ambulans, mesin fogging, dan set
+                        penjana (genset).</p>
+                </div>
+
+                <!-- Skop 2 -->
+                <div
+                    class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm hover-card reveal reveal-delay-2 relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-amber-400 opacity-50 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div
+                        class="w-14 h-14 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-3xl mb-6 shadow-sm border border-amber-100 group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-lightning"></i>
+                    </div>
+                    <h5 class="text-xl font-bold text-slate-900 mb-3">Skop 2: Tenaga</h5>
+                    <p class="text-slate-600 text-sm leading-relaxed text-justify">Pelepasan tidak langsung dari janaan
+                        tenaga yang dibeli. Terutamanya penggunaan utiliti elektrik seperti penyaman udara dan
+                        pencahayaan fasiliti.</p>
+                </div>
+
+                <!-- Skop 3 -->
+                <div
+                    class="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm hover-card reveal reveal-delay-3 relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-emerald-400 opacity-50 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div
+                        class="w-14 h-14 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center text-3xl mb-6 shadow-sm border border-emerald-100 group-hover:scale-110 transition-transform">
+                        <i class="ph-fill ph-recycle"></i>
+                    </div>
+                    <h5 class="text-xl font-bold text-slate-900 mb-3">Skop 3: Rantaian</h5>
+                    <p class="text-slate-600 text-sm leading-relaxed text-justify">Pelepasan tidak langsung lain yang
+                        berlaku dalam rantaian nilai jabatan. Merangkumi penggunaan kertas, air, sisa klinikal, dan
+                        mobiliti staf.</p>
+                </div>
+            </div>
+
+            <!-- Real World Scenario -->
+            <div class="bg-accent-600 rounded-2xl p-1 relative overflow-hidden reveal shadow-xl">
+                <div
+                    class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvc3ZnPg==')] z-0">
+                </div>
+                <div
+                    class="bg-white rounded-xl p-8 lg:p-10 relative z-10 flex flex-col md:flex-row gap-8 items-center border border-accent-100">
+                    <div class="md:w-1/3 flex-shrink-0">
+                        <div
+                            class="w-24 h-24 rounded-full bg-accent-50 flex items-center justify-center text-accent-500 mb-4 mx-auto md:mx-0">
+                            <i class="ph-fill ph-lightbulb text-5xl"></i>
+                        </div>
+                        <h6 class="text-xl font-bold text-slate-900 text-center md:text-left">Situasi Dunia Sebenar</h6>
+                    </div>
+                    <div class="md:w-2/3">
+                        <p class="text-slate-700 leading-relaxed mb-4 text-justify">
+                            <strong>Pemandu Ahmad</strong> menghidupkan enjin ambulans dan menunggunya selama 20 minit
+                            tanpa bergerak <span
+                                class="inline-flex px-2 py-0.5 rounded bg-red-100 text-red-800 text-xs font-bold mx-1">Skop
+                                1</span>.
+                            Semasa di dalam pejabat, <strong>Jururawat Siti</strong> membiarkan penyaman udara menyala
+                            pada 16°C ketika keluar rehat <span
+                                class="inline-flex px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-xs font-bold mx-1">Skop
+                                2</span>.
+                        </p>
+                        <p class="text-slate-700 leading-relaxed text-justify">
+                            Manakala <strong>PT Kamal</strong> mencetak 50 set minit mesyuarat menggunakan kertas A4
+                            hanya untuk satu muka surat setiap helaian <span
+                                class="inline-flex px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-xs font-bold mx-1">Skop
+                                3</span>. Kesemua tindakan harian ini menyumbang kepada jejak karbon fasiliti tanpa kita
+                            sedari!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-16 text-center reveal">
+                <div class="inline-block w-px h-16 bg-gradient-to-b from-transparent via-slate-300 to-transparent">
+                </div>
+            </div>
+        </section>
+
+        <!-- Topik 2: Intervensi Wajib -->
+        <section id="topik-2" class="py-24 bg-slate-100 border-y border-slate-200 scroll-mt-20">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 text-center reveal">
+                    <h3 class="text-brand-600 font-bold tracking-widest uppercase text-sm mb-3">Topik 2</h3>
+                    <h4 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-6">28 Intervensi Yang
+                        Disarankan</h4>
+                    <p class="text-lg text-slate-600">Amalan harian dibahagikan kepada 6 kluster utama. Sila klik pada
+                        setiap kluster untuk melihat panduan terperinci.</p>
+                </div>
+
+                <div class="space-y-4 reveal reveal-delay-2">
+                    <!-- Kluster A -->
+                    <div
+                        class="accordion bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:border-brand-300 transition-colors">
+                        <button class="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none"
+                            onclick="toggleAccordion(this)">
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-xl shrink-0">
+                                    <i class="ph-fill ph-thermometer-snow"></i>
+                                </span>
+                                <h5 class="text-lg font-bold text-slate-800">Kluster A: Penyaman Udara & Penyejukan</h5>
+                            </div>
+                            <i class="ph-bold ph-caret-down text-slate-400 accordion-icon text-xl"></i>
+                        </button>
+                        <div class="accordion-content bg-slate-50/50">
+                            <div class="px-6 pb-6 pt-2 border-t border-slate-100">
+                                <ul class="space-y-3 mt-4 text-slate-700">
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Suhu Optimum:</strong> Tetapkan suhu antara <strong>23°C hingga
+                                                26°C</strong> (kecuali bilik berstatus pematuhan SOP
+                                            klinikal/farmasi).</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Cuci Penapis:</strong> Bersihkan penapis udara (air filter)
+                                            <strong>setiap bulan</strong>.</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Lokasi Kompresor:</strong> Pastikan unit luar dipasang di tempat
+                                            yang teduh.</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Kecekapan Tenaga:</strong> Hanya gunakan penghawa dingin bertaraf
+                                            <strong>3 hingga 5 bintang</strong>.</span>
+                                    </li>
+                                </ul>
+                                <div
+                                    class="mt-6 bg-blue-50 p-4 rounded-xl text-sm text-blue-900 flex gap-3 border border-blue-100">
+                                    <i class="ph-fill ph-info text-xl text-blue-500 shrink-0"></i>
+                                    <p><strong>Tips Penjimatan:</strong> Pesakit mengadu sejuk? Laras suhu kepada 24°C
+                                        berbanding membiarkannya pada 18°C. Ia menjimatkan bil elektrik fasiliti secara
+                                        signifikan.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kluster B -->
+                    <div
+                        class="accordion bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:border-brand-300 transition-colors">
+                        <button class="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none"
+                            onclick="toggleAccordion(this)">
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="w-10 h-10 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center text-xl shrink-0">
+                                    <i class="ph-fill ph-lightbulb-filament"></i>
+                                </span>
+                                <h5 class="text-lg font-bold text-slate-800">Kluster B: Pencahayaan</h5>
+                            </div>
+                            <i class="ph-bold ph-caret-down text-slate-400 accordion-icon text-xl"></i>
+                        </button>
+                        <div class="accordion-content bg-slate-50/50">
+                            <div class="px-6 pb-6 pt-2 border-t border-slate-100">
+                                <ul class="space-y-3 mt-4 text-slate-700">
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Padam Apabila Keluar:</strong> Wajib memadamkan lampu ketika waktu
+                                            rehat dan selepas waktu pejabat.</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Zon Suis:</strong> Gunakan suis berasingan untuk maksimakan
+                                            pencahayaan semula jadi.</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Lampu LED:</strong> Gunakan mentol cekap tenaga untuk penggantian
+                                            baru.</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Penderia Gerakan:</strong> Pasang sensor di tandas dan
+                                            stor.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kluster C -->
+                    <div
+                        class="accordion bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:border-brand-300 transition-colors">
+                        <button class="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none"
+                            onclick="toggleAccordion(this)">
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="w-10 h-10 rounded-full bg-cyan-50 text-cyan-500 flex items-center justify-center text-xl shrink-0">
+                                    <i class="ph-fill ph-drop"></i>
+                                </span>
+                                <h5 class="text-lg font-bold text-slate-800">Kluster C: Bekalan Air</h5>
+                            </div>
+                            <i class="ph-bold ph-caret-down text-slate-400 accordion-icon text-xl"></i>
+                        </button>
+                        <div class="accordion-content bg-slate-50/50">
+                            <div class="px-6 pb-6 pt-2 border-t border-slate-100">
+                                <ul class="space-y-3 mt-4 text-slate-700">
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Laras Tekanan:</strong> Jimatkan penggunaan air.</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Pemeriksaan Berjadual:</strong> Kenal pasti kesan kebocoran secara
+                                            berkala.</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Baik Pulih Pantas:</strong> Segera baiki paip yang menitik.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kluster D -->
+                    <div
+                        class="accordion bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:border-brand-300 transition-colors">
+                        <button class="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none"
+                            onclick="toggleAccordion(this)">
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="w-10 h-10 rounded-full bg-purple-50 text-purple-500 flex items-center justify-center text-xl shrink-0">
+                                    <i class="ph-fill ph-printer"></i>
+                                </span>
+                                <h5 class="text-lg font-bold text-slate-800">Kluster D: Percetakan & Pejabat</h5>
+                            </div>
+                            <i class="ph-bold ph-caret-down text-slate-400 accordion-icon text-xl"></i>
+                        </button>
+                        <div class="accordion-content bg-slate-50/50">
+                            <div class="px-6 pb-6 pt-2 border-t border-slate-100">
+                                <ul class="space-y-3 mt-4 text-slate-700">
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Paperless:</strong> Kurangkan percetakan; edar memo
+                                            softcopy. Ketua jabatan disarankan untuk meminit surat secara digital, atau
+                                            menggunakan sistem DDMS.</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Cetak Dua Belah:</strong> Wajib cetak double-sided jika
+                                            perlu.</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Draf Berjimat:</strong> Cetak multiple frames untuk dokumen
+                                            draf.</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Tiada Standby:</strong> Matikan komputer & mesin pencetak selepas
+                                            kerja.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kluster E -->
+                    <div
+                        class="accordion bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:border-brand-300 transition-colors">
+                        <button class="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none"
+                            onclick="toggleAccordion(this)">
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="w-10 h-10 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center text-xl shrink-0">
+                                    <i class="ph-fill ph-car-profile"></i>
+                                </span>
+                                <h5 class="text-lg font-bold text-slate-800">Kluster E: Pengangkutan</h5>
+                            </div>
+                            <i class="ph-bold ph-caret-down text-slate-400 accordion-icon text-xl"></i>
+                        </button>
+                        <div class="accordion-content bg-slate-50/50">
+                            <div class="px-6 pb-6 pt-2 border-t border-slate-100">
+                                <ul class="space-y-3 mt-4 text-slate-700">
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Anti-Idling:</strong> Wajib matikan enjin semasa menunggu
+                                            kakitangan buat PTP, aktiviti lapangan dan lain-lain. Selain bahaya, ia juga
+                                            merugikan petrol.</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Mesyuarat Maya:</strong> Utamakan Video Conferencing (VC).</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Kaji Selidik:</strong> Survey Mobiliti Pekerja akan diberikan
+                                            penerangan selepas ini, akan dibuat di peringkat JKN.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kluster F -->
+                    <div
+                        class="accordion bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:border-brand-300 transition-colors">
+                        <button class="w-full text-left px-6 py-5 flex items-center justify-between focus:outline-none"
+                            onclick="toggleAccordion(this)">
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center text-xl shrink-0">
+                                    <i class="ph-fill ph-tree"></i>
+                                </span>
+                                <h5 class="text-lg font-bold text-slate-800">Kluster F: Kelestarian Lain</h5>
+                            </div>
+                            <i class="ph-bold ph-caret-down text-slate-400 accordion-icon text-xl"></i>
+                        </button>
+                        <div class="accordion-content bg-slate-50/50">
+                            <div class="px-6 pb-6 pt-2 border-t border-slate-100">
+                                <ul class="space-y-3 mt-4 text-slate-700">
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Penghijauan:</strong> Menjaga rumput dan pokok sedia ada.</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Tong 3 Warna:</strong> Sediakan tong kitar semula 3R (Biru,
+                                            Coklat, Jingga).</span>
+                                    </li>
+                                    <li class="flex gap-3"><i class="ph-bold ph-check text-brand-500 mt-1"></i>
+                                        <span><strong>Guna Tangga:</strong> Kurangkan lif untuk pergerakan 1-2
+                                            tingkat.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real World Scenario - Intervensi -->
+                <div class="mt-12 bg-emerald-600 rounded-2xl p-1 relative overflow-hidden reveal shadow-xl">
+                    <div class="absolute inset-0 bg-grid-pattern opacity-10 z-0"></div>
+                    <div
+                        class="bg-white rounded-xl p-8 relative z-10 flex flex-col md:flex-row gap-8 items-center border border-emerald-100">
+                        <div class="md:w-1/3 flex-shrink-0 text-center md:text-left">
+                            <div
+                                class="w-20 h-20 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500 mb-4 mx-auto md:mx-0 shadow-sm border border-emerald-100">
+                                <i class="ph-fill ph-plant text-4xl"></i>
+                            </div>
+                            <h6 class="text-xl font-bold text-slate-900">Senario Kehidupan Sebenar</h6>
+                        </div>
+                        <div class="md:w-2/3">
+                            <p class="text-slate-700 leading-relaxed text-justify mb-4">
+                                <strong>Klinik Kesihatan X</strong> mula mempraktikkan intervensi REKA: menetapkan suhu
+                                penyaman udara pada 24°C, memadamkan semua lampu waktu rehat, dan menggunakan e-memo
+                                digital. Hasilnya amat memberangsangkan, dalam masa sebulan sahaja mereka berjaya:
+                            </p>
+                            <ul
+                                class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm font-semibold text-slate-800 bg-slate-50 p-4 rounded-lg border border-slate-100 text-left">
+                                <li class="flex items-center gap-3"><i
+                                        class="ph-fill ph-lightning text-amber-500 text-xl"></i> Menjimatkan bil
+                                    elektrik RM1,500</li>
+                                <li class="flex items-center gap-3"><i
+                                        class="ph-fill ph-printer text-purple-500 text-xl"></i> Pengecualian 5 rim
+                                    kertas</li>
+                                <li class="flex items-center gap-3 sm:col-span-2 text-emerald-700"><i
+                                        class="ph-fill ph-tree text-emerald-500 text-xl"></i> Mengurangkan 200kg
+                                    pelepasan Karbon (C02e)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Topik 3: Tadbir Urus -->
+        <section id="topik-3" class="py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto scroll-mt-20">
+            <div class="mb-16 text-center max-w-3xl mx-auto reveal">
+                <h3 class="text-brand-600 font-bold tracking-widest uppercase text-sm mb-3">Topik 3</h3>
+                <h4 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-6">Tadbir Urus & Peranan</h4>
+                <p class="text-lg text-slate-600">Pemantauan berterusan oleh Pasukan Kesihatan Pekerjaan dan Alam
+                    Sekitar (KPAS).</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 relative isolate">
+
+                <!-- Connector Line for Desktop -->
+                <div
+                    class="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-px bg-slate-300 z-0">
+                </div>
+
+                <!-- JKN Card -->
+                <div
+                    class="bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl shadow-slate-200/50 reveal reveal-delay-1 relative z-10 group hover:border-brand-200 transition-colors">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-3xl mb-8 group-hover:bg-brand-600 transition-colors shadow-lg">
+                        <i class="ph-fill ph-buildings"></i>
+                    </div>
+                    <h5 class="text-2xl font-bold text-slate-900 mb-6">Peranan JKN (Negeri)</h5>
+                    <ul class="space-y-4 text-slate-700">
+                        <li class="flex items-start gap-4">
+                            <span
+                                class="w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-sm shrink-0 border border-brand-100">1</span>
+                            <div>
+                                <strong class="block text-slate-900">Kumpul & Analisa Data</strong>
+                                <span class="text-sm">Pantau pelaporan data utiliti dan sisa bulanan dari semua
+                                    PKD/Fasiliti.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span
+                                class="w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-sm shrink-0 border border-brand-100">2</span>
+                            <div>
+                                <strong class="block text-slate-900">Tindakan Pembetulan</strong>
+                                <span class="text-sm">Tinjau fasiliti yang gagal capai sasaran, siasat punca, dan cadang
+                                    penambahbaikan.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Fasiliti Card -->
+                <div
+                    class="bg-brand-50 rounded-3xl p-8 md:p-10 border border-brand-100 shadow-xl shadow-brand-100/50 reveal reveal-delay-2 relative z-10">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-white text-brand-600 flex items-center justify-center text-3xl mb-8 shadow-md">
+                        <i class="ph-fill ph-first-aid"></i>
+                    </div>
+                    <h5 class="text-2xl font-bold text-slate-900 mb-6">Peranan Fasiliti</h5>
+                    <ul class="space-y-4 text-slate-700">
+                        <li class="flex items-start gap-4">
+                            <span
+                                class="w-8 h-8 rounded-full bg-white text-brand-600 flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">1</span>
+                            <div>
+                                <strong class="block text-slate-900">Pelaksanaan Amalan</strong>
+                                <span class="text-sm">Terapkan 28 Intervensi yang disarankan dalam rutin harian
+                                    kakitangan
+                                    klinik/hospital.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span
+                                class="w-8 h-8 rounded-full bg-white text-brand-600 flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">2</span>
+                            <div>
+                                <strong class="block text-slate-900">Penyelarasan Data</strong>
+                                <span class="text-sm">Fasiliti tidak perlu merekod utiliti. Unit KPAS JKN Kedah akan
+                                    selaraskan perolehan data utiliti dan minyak di peringkat JKN.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Topik 4: Kuiz -->
+        <section id="topik-4" class="py-24 bg-white scroll-mt-20">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-12 text-center reveal">
+                    <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-100 text-brand-600 mb-6 mx-auto">
+                        <i class="ph-fill ph-medal text-3xl"></i>
+                    </div>
+                    <h3 class="text-brand-600 font-bold tracking-widest uppercase text-sm mb-3">Topik 4</h3>
+                    <h4 class="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-6">Uji Kefahaman Anda</h4>
+                    <p class="text-lg text-slate-600">Jawab kuiz ringkas ini untuk melengkapkan modul REKA.</p>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 md:p-10 shadow-lg reveal reveal-delay-1 relative overflow-hidden"
+                    id="quiz-container">
+
+                    <!-- Progress Bar for Quiz -->
+                    <div class="flex justify-between items-center mb-8 text-sm font-bold text-slate-500">
+                        <span>Soalan <span id="current-q" class="text-brand-600">1</span> daripada <span
+                                id="total-q">4</span></span>
+                        <div class="flex gap-1" id="quiz-dots">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Question Holder -->
+                    <div id="question-text" class="text-xl md:text-2xl font-semibold text-slate-800 mb-8 min-h-[80px]">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Options Holder -->
+                    <div id="options-container" class="space-y-4">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Final Result Screen (Hidden by default) -->
+                <div id="quiz-result"
+                    class="hidden text-center bg-brand-50 border border-brand-200 rounded-3xl p-10 shadow-xl reveal">
+                    <div
+                        class="w-24 h-24 rounded-full bg-brand-500 text-white flex items-center justify-center text-5xl mx-auto mb-6 shadow-lg shadow-brand-500/40 animate-bounce">
+                        <i class="ph-fill ph-trophy"></i>
+                    </div>
+                    <h4 class="text-3xl font-heading font-bold text-slate-900 mb-4">Tahniah! Anda Selesai Modul.</h4>
+                    <p class="text-lg text-slate-700 max-w-lg mx-auto mb-8">Anda telah berjaya memahami teori dan
+                        intervensi Program Fasiliti Rendah Karbon (REKA).</p>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 inline-block text-left mb-8 shadow-sm">
+                        <p class="font-bold text-slate-800 mb-2 border-b pb-2">Ikrar Kelestarian Saya:</p>
+                        <p class="text-slate-600 flex items-start gap-2"><i
+                                class="ph-fill ph-check-circle text-brand-500 mt-1"></i> Saya komited melaksanakan
+                            amalan cekap tenaga.</p>
+                        <p class="text-slate-600 flex items-start gap-2"><i
+                                class="ph-fill ph-check-circle text-brand-500 mt-1"></i> Saya akan mengurangkan
+                            pembaziran sumber di fasiliti.</p>
+                    </div>
+                    <br>
+                    <button onclick="window.scrollTo(0, 0); location.reload();"
+                        class="px-8 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-colors">
+                        Mula Semula Modul
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 text-center flex flex-col items-center">
+            <div class="flex items-center gap-2 mb-4">
+                <i class="ph-fill ph-leaf text-brand-500 text-2xl"></i>
+                <span class="text-white font-heading font-bold text-xl tracking-wide">REKA</span>
+            </div>
+            <p class="mb-6 max-w-md text-sm leading-relaxed">Inisiatif Kelestarian & Mampan <br> Modul Pembelajaran
+                Rendah Karbon, Kementerian Kesihatan Malaysia.</p>
+            <div class="text-xs text-slate-500">
+                &copy; 2026 Hak Cipta Terpelihara.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
